@@ -71,16 +71,17 @@ export class News extends Component {
         return (
             <div className="container my-3">
                 <h2>NewsMonkey - Top Headlines</h2>
+                {/* maps is an higher order array method and expects a return value from arrow function technically array-callback-return. Also map ke through iterate karne ke liye ek unique key value deni padti hai to each element you iterate through */}
+                
                 <div className="row">
-                    <div className="col md-4">
-                        <NewsItem title="myTitle" description="myDesc" imageUrl="https://ichef.bbci.co.uk/live-experience/cps/624/cpsprodpb/A464/production/_121148024_pattinson_getty.jpg" />
-                    </div>
-                    <div className="col md-4">
-                        <NewsItem title="myTitle" description="myDesc" />
-                    </div>
-                    <div className="col md-4">
-                        <NewsItem title="myTitle" description="myDesc" />
-                    </div>
+                {this.state.articles.map((element)=>{
+                    //   console.log(element.title);
+                    // we are returning  div each time map iterate through an element
+                    return (<div className="col md-4" key={element.url} >  
+                        <NewsItem title={element.title.slice(0,31)} description={element.description.slice(0,88)} imageUrl={element.urlToImage} newsUrl={element.url}/>
+                    </div>)
+                    
+                })}
                 </div>
             </div>
         )
