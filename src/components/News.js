@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import NewsItem from './NewsItem'
+import Spinner from './Spinner';
 
 export class News extends Component {
 
@@ -23,22 +24,29 @@ export class News extends Component {
     // page-->Use this to page through the results if the total results found is greater than the page size.
     async componentDidMount() {
         console.log("I am componentDidMount");
-        let url = "https://newsapi.org/v2/top-headlines?country=in&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=1&pageSize=20";
+        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=1&pageSize=${this.props.pageSize}`;
+        this.setState({loading: true});
         let data = await fetch(url);
         let parsedData = await data.json();
         console.log(parsedData);
-        this.setState({ articles: parsedData.articles, totalResults: parsedData.totalResults });
+        this.setState({ 
+            articles: parsedData.articles, 
+            totalResults: parsedData.totalResults,
+            loading:false
+         });
     }
 
     handlePrevClick = async () => {
         console.log("i am inside prevclick");
-        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page - 1}&pageSize=20`;
+        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
+        this.setState({loading: true});
         let data = await fetch(url);
         let parsedData = await data.json();
         console.log(parsedData);
         this.setState({
             articles: parsedData.articles,
-            page: this.state.page - 1
+            page: this.state.page - 1,
+            loading: false
         })
     }
 
@@ -48,13 +56,15 @@ export class News extends Component {
         // INSTEAD of writting if else logic mene next button ko hi disabled kar diya by providing the same logic we provided in if parenthesis 
         // }
         // else{
-        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page + 1}&pageSize=20`;
+        let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
+        this.setState({loading: true});
         let data = await fetch(url);
         let parsedData = await data.json();
         console.log(parsedData);
         this.setState({
             articles: parsedData.articles,
-            page: this.state.page + 1
+            page: this.state.page + 1,
+            loading: false
         })
         // }
     }
@@ -63,11 +73,12 @@ export class News extends Component {
         console.log("I am render() method");
         return (
             <div className="container my-3">
-                <h1>NewsMonkey - Top Headlines</h1>
+                <h1 className="text-center">NewsMonkey - Top Headlines</h1>
+                {this.state.loading && <Spinner/>}  {/*saying-->agar this.state.loading true hai to spimmer component chalao warna nahi */}
                 {/* maps is an higher order array method and expects a return value from arrow function technically array-callback-return. Also map ke through iterate karne ke liye ek unique key value deni padti hai to each element you iterate through */}
 
                 <div className="row">
-                    {this.state.articles.map((element) => {
+                    {!this.state.loading && this.state.articles.map((element) => { // jab tak loader true hone ke baad wapas se dalse nahi hi jata tan tak && ke baad waali cheez mat chalao
                         //   console.log(element.title);
                         // we are returning  div each time map iterate through an element
                         return (<div className="col md-4" key={element.url} >
@@ -79,7 +90,7 @@ export class News extends Component {
                 <div className="container d-flex justify-content-between">
                     {/* Adding previous and next Buttons */}
                     <button disabled={this.state.page <= 1} type="button" onClick={this.handlePrevClick} class="btn btn-dark">&larr; Previous</button>
-                    <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults / 20)} type="button" onClick={this.handleNextClick} className="btn btn-dark">Next &rarr;</button>
+                    <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults /this.props.pageSize)} type="button" onClick={this.handleNextClick} className="btn btn-dark">Next &rarr;</button>
                 </div>
             </div>
         )
