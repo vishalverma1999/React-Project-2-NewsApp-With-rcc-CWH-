@@ -30,14 +30,8 @@ export class News extends Component {
         }
     }
 
-    // componentDidMount() method will run after render() method completes....baaki baad mein samjhenge
-    // since ab hum fetch kar rahe hai api se data isliye isliye aritcles json k hata denge... we use async await concept to fetch api
-    // pageSize and page are parameters provided by the news API to manipulate the fetch data we are requesting from API
-    // pageSize-->The number of results to return per page (request). 20 is the default, 100 is the maximum.
-    // page-->Use this to page through the results if the total results found is greater than the page size.
-    async componentDidMount() {
-        console.log("I am componentDidMount");
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=1&pageSize=${this.props.pageSize}`;
+    async updateNews(){
+        const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page}&pageSize=${this.props.pageSize}`;
         this.setState({loading: true});
         let data = await fetch(url);
         let parsedData = await data.json();
@@ -49,18 +43,42 @@ export class News extends Component {
          });
     }
 
+    // componentDidMount() method will run after render() method completes....baaki baad mein samjhenge
+    // since ab hum fetch kar rahe hai api se data isliye isliye aritcles json k hata denge... we use async await concept to fetch api
+    // pageSize and page are parameters provided by the news API to manipulate the fetch data we are requesting from API
+    // pageSize-->The number of results to return per page (request). 20 is the default, 100 is the maximum.
+    // page-->Use this to page through the results if the total results found is greater than the page size.
+    async componentDidMount() {
+        // console.log("I am componentDidMount");
+        // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=1&pageSize=${this.props.pageSize}`;
+        // this.setState({loading: true});
+        // let data = await fetch(url);
+        // let parsedData = await data.json();
+        // console.log(parsedData);
+        // this.setState({ 
+        //     articles: parsedData.articles, 
+        //     totalResults: parsedData.totalResults,
+        //     loading:false
+        //  });
+         // Here we are refactoring code(removing duplicacy of code, cleaning n all)
+        this.updateNews();
+    }
+
     handlePrevClick = async () => {
-        console.log("i am inside prevclick");
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-        this.setState({loading: true});
-        let data = await fetch(url);
-        let parsedData = await data.json();
-        console.log(parsedData);
-        this.setState({
-            articles: parsedData.articles,
-            page: this.state.page - 1,
-            loading: false
-        })
+        // console.log("i am inside prevclick");
+        // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
+        // this.setState({loading: true});
+        // let data = await fetch(url);
+        // let parsedData = await data.json();
+        // console.log(parsedData);
+        // this.setState({
+        //     articles: parsedData.articles,
+        //     page: this.state.page - 1,
+        //     loading: false
+        // })
+        // Here we are refactoring code(removing duplicacy of code, cleaning n all)
+        this.setState({page: this.state.page-1});
+        this.updateNews();
     }
 
     handleNextClick = async () => {
@@ -69,17 +87,20 @@ export class News extends Component {
         // INSTEAD of writting if else logic mene next button ko hi disabled kar diya by providing the same logic we provided in if parenthesis 
         // }
         // else{
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-        this.setState({loading: true});
-        let data = await fetch(url);
-        let parsedData = await data.json();
-        console.log(parsedData);
-        this.setState({
-            articles: parsedData.articles,
-            page: this.state.page + 1,
-            loading: false
-        })
+        // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
+        // this.setState({loading: true});
+        // let data = await fetch(url);
+        // let parsedData = await data.json();
+        // console.log(parsedData);
+        // this.setState({
+        //     articles: parsedData.articles,
+        //     page: this.state.page + 1,
+        //     loading: false
+        // })
         // }
+         // Here we are refactoring code(removing duplicacy of code, cleaning n all)
+        this.setState({page: this.state.page+1});
+        this.updateNews();
     }
 
     render() {
@@ -103,7 +124,7 @@ export class News extends Component {
 
                 <div className="container d-flex justify-content-between">
                     {/* Adding previous and next Buttons */}
-                    <button disabled={this.state.page <= 1} type="button" onClick={this.handlePrevClick} class="btn btn-dark">&larr; Previous</button>
+                    <button disabled={this.state.page <= 1} type="button" onClick={this.handlePrevClick} className="btn btn-dark">&larr; Previous</button>
                     <button disabled={this.state.page + 1 > Math.ceil(this.state.totalResults /this.props.pageSize)} type="button" onClick={this.handleNextClick} className="btn btn-dark">Next &rarr;</button>
                 </div>
             </div>
