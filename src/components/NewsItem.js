@@ -13,15 +13,17 @@ export class NewsItem extends Component {
     // }
 
     render() {
-        let { title, description, imageUrl, newsUrl } = this.props;   // We are using destructuring concept...props mein hum object denge aur us object se title aur description waali keys ko pull karlo 
+        let { title, description, imageUrl, newsUrl, author, date, source } = this.props;   // We are using destructuring concept...props mein hum object denge aur us object se title aur description waali keys ko pull karlo 
         return (
             <div className="my-3">
                 <div className="card" style={{ width: "18rem"}}>
+                <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style={{zIndex:1, left:"90%"}}>{source}</span>  {/*start-100--> ye waali bootstrap ki class hatakar left:"90%" add liya hai style mein */}
                     <img src={!imageUrl?"https://images.moneycontrol.com/static-mcnews/2021/10/Google_Pixel-2-770x433.jpg": imageUrl} className="card-img-top" alt="..." />
                     <div className="card-body">
                         <h5 className="card-title">{title}</h5>
                         <p className="card-text">{description}</p>
-                        <a href={newsUrl} target="_blank" className="btn btn-sm btn-dark">Read More</a>
+                        <p className="card-text"><small className="text-muted">By {author?author:"Unknown"} on {new Date(date).toGMTString()}</small></p>
+                        <a rel="noreferrer" href={newsUrl} target="_blank" className="btn btn-sm btn-dark">Read More</a>
                     </div>
                 </div>
             </div>
