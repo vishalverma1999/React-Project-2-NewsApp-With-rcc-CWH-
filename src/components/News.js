@@ -29,7 +29,8 @@ export class News extends Component {
             page: 1
         }
     }
-
+    
+//     Refactor karne ke baad ek bug aa raha hai, like jaise hum next par click karte hai to bhi hume page 1 ka hi content render ho raha aur jab firse hum next par click karte hai tab jakar 2nd page ka content load ho raha hai...aisa behaviour bas 1st page par hi ho raha hai uske baad nahi previous click karne par bhi bugs aa rahe hai...to ye refactoring buggy hai
     async updateNews(){
         const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page}&pageSize=${this.props.pageSize}`;
         this.setState({loading: true});
