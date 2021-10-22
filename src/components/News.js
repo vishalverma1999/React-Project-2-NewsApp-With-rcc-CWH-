@@ -30,8 +30,28 @@ export class News extends Component {
         }
     }
 
-    async updateNews(){
-        const url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    // Refactor karne ke baad ek bug aa raha hai, like jaise hum next par click karte hai to bhi hume page 1 ka hi content render ho raha aur jab firse hum next par click karte hai tab jakar 2nd page ka content load ho raha hai...aisa behaviour bas 1st page par hi ho raha hai uske baad nahi previous click karne par bhi bugs aa rahe hai...to ye refactoring buggy hai
+    // async updateNews(){
+    //     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=eae5ffbbec1448a7bcfcb887ccdf39c6&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+    //     this.setState({loading: true});
+    //     let data = await fetch(url);
+    //     let parsedData = await data.json();
+    //     console.log(parsedData);
+    //     this.setState({ 
+    //         articles: parsedData.articles, 
+    //         totalResults: parsedData.totalResults,
+    //         loading:false
+    //      });
+    // }
+
+    // componentDidMount() method will run after render() method completes....baaki baad mein samjhenge
+    // since ab hum fetch kar rahe hai api se data isliye isliye aritcles json k hata denge... we use async await concept to fetch api
+    // pageSize and page are parameters provided by the news API to manipulate the fetch data we are requesting from API
+    // pageSize-->The number of results to return per page (request). 20 is the default, 100 is the maximum.
+    // page-->Use this to page through the results if the total results found is greater than the page size.
+    async componentDidMount() {
+        console.log("I am componentDidMount");
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=eae5ffbbec1448a7bcfcb887ccdf39c6&page=1&pageSize=${this.props.pageSize}`;
         this.setState({loading: true});
         let data = await fetch(url);
         let parsedData = await data.json();
@@ -41,44 +61,25 @@ export class News extends Component {
             totalResults: parsedData.totalResults,
             loading:false
          });
-    }
-
-    // componentDidMount() method will run after render() method completes....baaki baad mein samjhenge
-    // since ab hum fetch kar rahe hai api se data isliye isliye aritcles json k hata denge... we use async await concept to fetch api
-    // pageSize and page are parameters provided by the news API to manipulate the fetch data we are requesting from API
-    // pageSize-->The number of results to return per page (request). 20 is the default, 100 is the maximum.
-    // page-->Use this to page through the results if the total results found is greater than the page size.
-    async componentDidMount() {
-        // console.log("I am componentDidMount");
-        // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=1&pageSize=${this.props.pageSize}`;
-        // this.setState({loading: true});
-        // let data = await fetch(url);
-        // let parsedData = await data.json();
-        // console.log(parsedData);
-        // this.setState({ 
-        //     articles: parsedData.articles, 
-        //     totalResults: parsedData.totalResults,
-        //     loading:false
-        //  });
          // Here we are refactoring code(removing duplicacy of code, cleaning n all)
-        this.updateNews();
+        // this.updateNews();
     }
 
     handlePrevClick = async () => {
-        // console.log("i am inside prevclick");
-        // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
-        // this.setState({loading: true});
-        // let data = await fetch(url);
-        // let parsedData = await data.json();
-        // console.log(parsedData);
-        // this.setState({
-        //     articles: parsedData.articles,
-        //     page: this.state.page - 1,
-        //     loading: false
-        // })
+        console.log("i am inside prevclick");
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=eae5ffbbec1448a7bcfcb887ccdf39c6&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
+        this.setState({loading: true});
+        let data = await fetch(url);
+        let parsedData = await data.json();
+        console.log(parsedData);
+        this.setState({
+            articles: parsedData.articles,
+            page: this.state.page - 1,
+            loading: false
+        })
         // Here we are refactoring code(removing duplicacy of code, cleaning n all)
-        this.setState({page: this.state.page-1});
-        this.updateNews();
+        // this.setState({page: this.state.page-1});
+        // this.updateNews();
     }
 
     handleNextClick = async () => {
@@ -87,16 +88,16 @@ export class News extends Component {
         // INSTEAD of writting if else logic mene next button ko hi disabled kar diya by providing the same logic we provided in if parenthesis 
         // }
         // else{
-        // let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=7aa5f77618b7445bbc4bcf7585201cfe&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
-        // this.setState({loading: true});
-        // let data = await fetch(url);
-        // let parsedData = await data.json();
-        // console.log(parsedData);
-        // this.setState({
-        //     articles: parsedData.articles,
-        //     page: this.state.page + 1,
-        //     loading: false
-        // })
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=eae5ffbbec1448a7bcfcb887ccdf39c6&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
+        this.setState({loading: true});
+        let data = await fetch(url);
+        let parsedData = await data.json();
+        console.log(parsedData);
+        this.setState({
+            articles: parsedData.articles,
+            page: this.state.page + 1,
+            loading: false
+        })
         // }
          // Here we are refactoring code(removing duplicacy of code, cleaning n all)
         this.setState({page: this.state.page+1});
