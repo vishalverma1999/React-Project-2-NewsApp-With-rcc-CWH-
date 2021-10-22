@@ -58,17 +58,21 @@ export class News extends Component {
     // pageSize-->The number of results to return per page (request). 20 is the default, 100 is the maximum.
     // page-->Use this to page through the results if the total results found is greater than the page size.
     async componentDidMount() {
+        this.props.setProgress(10);
         console.log("I am componentDidMount");
         let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=183ab7b6e9934ec5b3df7ea63e04fe2a&page=1&pageSize=${this.props.pageSize}`;
         this.setState({ loading: true });
         let data = await fetch(url);
+        this.props.setProgress(30);
         let parsedData = await data.json();
+        this.props.setProgress(70);
         console.log(parsedData);
         this.setState({
             articles: parsedData.articles,
             totalResults: parsedData.totalResults,
             loading: false    
         }); 
+        this.props.setProgress(100);  
         // Here we are refactoring code(removing duplicacy of code, cleaning n all)
         // this.updateNews();
     }
@@ -150,7 +154,7 @@ export class News extends Component {
                             {this.state.articles.map((element) => { // jab tak loader true hone ke baad wapas se dalse nahi hi jata tan tak && ke baad waali cheez mat chalao
                                 //   console.log(element.title);
                                 // we are returning  div each time map iterate through an element
-                                return (<div className="col md-4" key={element.url} >
+                                return (<div className="col-md-4" key={element.url} >
                                     <NewsItem title={element.title ? element.title : ""} description={element.description ? element.description : ""} imageUrl={element.urlToImage} newsUrl={element.url} author={element.author} date={element.publishedAt} source={element.source.name} />
                                 </div>)
 
