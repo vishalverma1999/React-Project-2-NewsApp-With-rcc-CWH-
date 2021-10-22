@@ -17,9 +17,13 @@ export class News extends Component {
        category: PropTypes.string
       }
 
+      capitaliseFirstLetter = (title)=> {
+        return title.charAt(0).toUpperCase()+ title.slice(1);
+    }
+
     // Constructor ki madad se hum states concept ko use kar sakte hai
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         console.log("I am a News Component Constructor");
         // this.state = {date: new Date()};   // This is an example showing syntax of how to use States
         // this.setState({comment: 'Hello'});  // Do Not Modify State Directly Instead, use setState():
@@ -28,6 +32,7 @@ export class News extends Component {
             loading: false,
             page: 1
         }
+        document.title = `${this.capitaliseFirstLetter(this.props.category)} - NewsMonkey`;  //We need to pass the props in constructor to use them here
     }
 
  
@@ -100,15 +105,15 @@ export class News extends Component {
         })
         // }
          // Here we are refactoring code(removing duplicacy of code, cleaning n all)
-        this.setState({page: this.state.page+1});
-        this.updateNews();
+        // this.setState({page: this.state.page+1});
+        // this.updateNews();
     }
 
     render() {
         console.log("I am render() method");
         return (
             <div className="container my-3">
-                <h1 className="text-center" style={{margin: "35px 0px"}}>NewsMonkey - Top Headlines</h1>
+                <h1 className="text-center" style={{margin: "35px 0px"}}>NewsMonkey - Top {this.capitaliseFirstLetter(this.props.category)} Headlines</h1>
                 {this.state.loading && <Spinner/>}  {/*saying-->agar this.state.loading true hai to spimmer component chalao warna nahi */}
                 {/* maps is an higher order array method and expects a return value from arrow function technically array-callback-return. Also map ke through iterate karne ke liye ek unique key value deni padti hai to each element you iterate through */}
 
