@@ -106,7 +106,7 @@ const News = (props) => {
 
         return (
             <>
-                <h1 className="text-center" style={{ margin: "35px 0px" }}>NewsMonkey - Top {capitaliseFirstLetter(props.category)} Headlines</h1>
+                <h1 className="text-center" style={{ margin: "35px 0px", marginTop:"90px" }}>NewsMonkey - Top {capitaliseFirstLetter(props.category)} Headlines</h1>
                 {loading && <Spinner />}
                 {/*saying-->agar loading true hai to spinner component chalao warna nahi */}
                 {/* maps is an higher order array method and expects a return value from arrow function technically array-callback-return. Also map ke through iterate karne ke liye ek unique key value deni padti hai to each element you iterate through */}
