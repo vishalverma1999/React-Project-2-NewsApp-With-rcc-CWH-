@@ -60,7 +60,7 @@ export class News extends Component {
     async componentDidMount() {
         this.props.setProgress(10);
         console.log("I am componentDidMount");
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=183ab7b6e9934ec5b3df7ea63e04fe2a&page=1&pageSize=${this.props.pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=1&pageSize=${this.props.pageSize}`;
         this.setState({ loading: true });
         let data = await fetch(url);
         this.props.setProgress(30);
@@ -79,7 +79,7 @@ export class News extends Component {
 
     handlePrevClick = async () => {
         //     console.log("i am inside prevclick");
-        //     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=eae5ffbbec1448a7bcfcb887ccdf39c6&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
+        //     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page - 1}&pageSize=${this.props.pageSize}`;
         //     this.setState({ loading: true });
         //     let data = await fetch(url);
         //     let parsedData = await data.json();
@@ -100,7 +100,7 @@ export class News extends Component {
         //     // INSTEAD of writting if else logic mene next button ko hi disabled kar diya by providing the same logic we provided in if parenthesis 
         //     // }
         //     // else{
-        //     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=eae5ffbbec1448a7bcfcb887ccdf39c6&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
+        //     let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page + 1}&pageSize=${this.props.pageSize}`;
         //     this.setState({ loading: true });
         //     let data = await fetch(url);
         //     let parsedData = await data.json();
@@ -121,7 +121,7 @@ export class News extends Component {
 
     fetchMoreData = async () => {
         this.setState({ page: this.state.page + 1 });  // isko upar likhna padega kyunki 1st page to componentDidMount se aayega fir uske baad ke pages yaha se aayenge
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=183ab7b6e9934ec5b3df7ea63e04fe2a&page=${this.state.page}&pageSize=${this.props.pageSize}`;
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`;
         // this.setState({ loading: true });    // ye comment out kiya hai kyunki ab infinite scroll ka andar jo loader/spinner hai wo chalega 
         let data = await fetch(url);
         let parsedData = await data.json();
